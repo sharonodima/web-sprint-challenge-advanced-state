@@ -1,16 +1,28 @@
-import React from 'react'
+import React, {useEffect} from 'react'
+import { connect } from 'react-redux'
+import * as actionCreators from '../state/action-creators'
 
-export default function Quiz(props) {
+function Quiz(props) {
+  console.log(props)
+  useEffect(props.fetchQuiz, [])
   return (
     <div id="wrapper">
       {
         // quiz already in state? Let's use that, otherwise render "Loading next quiz..."
-        true ? (
+        props.quiz ? (
           <>
-            <h2>What is a closure?</h2>
+            <h2>{props.quiz.question}</h2>
 
             <div id="quizAnswers">
-              <div className="answer selected">
+            {props.quiz.answers.map((answer)=>{
+              return <div key = {answer.answer_id} className={props.selectedAnswer === answer.answer_id ? "answer selected" : "answer"}>
+              {answer.text}
+                <button onClick = {() =>props.selectAnswer(answer.answer_id)}>
+                {props.selectedAnswer === answer.answer_id ? "SELECTED" : "Select"}
+                </button>
+              </div>
+            })}
+              {/* <div className="answer selected">
                 A function
                 <button>
                   SELECTED
@@ -22,13 +34,15 @@ export default function Quiz(props) {
                 <button>
                   Select
                 </button>
-              </div>
+              </div> */}
             </div>
 
-            <button id="submitAnswerBtn">Submit answer</button>
+            <button id="submitAnswerBtn" onClick = {props.postAnswer}>Submit answer</button>
           </>
         ) : 'Loading next quiz...'
       }
     </div>
   )
 }
+
+export default connect(st => st, actionCreators)(Quiz)
