@@ -3,8 +3,11 @@ import { connect } from 'react-redux'
 import * as actionCreators from '../state/action-creators'
 
 function Quiz(props) {
-  console.log(props)
-  useEffect(props.fetchQuiz, [])
+  useEffect(()=>{
+    if(!props.quiz){
+      props.fetchQuiz();
+    }
+  }, [])
   return (
     <div id="wrapper">
       {
@@ -22,22 +25,9 @@ function Quiz(props) {
                 </button>
               </div>
             })}
-              {/* <div className="answer selected">
-                A function
-                <button>
-                  SELECTED
-                </button>
-              </div>
-
-              <div className="answer">
-                An elephant
-                <button>
-                  Select
-                </button>
-              </div> */}
             </div>
 
-            <button id="submitAnswerBtn" onClick = {props.postAnswer}>Submit answer</button>
+            <button disabled = {!props.selectedAnswer} id="submitAnswerBtn" onClick = {props.postAnswer}>Submit answer</button>
           </>
         ) : 'Loading next quiz...'
       }

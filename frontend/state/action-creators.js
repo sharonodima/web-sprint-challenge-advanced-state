@@ -95,9 +95,10 @@ export function postQuiz() {
       "false_answer_text": state.form.newFalseAnswer
     })
     .then((response)=>{
+      console.log(response.data)
       dispatch({
         type: actionTypes.SET_INFO_MESSAGE,
-        payload: `Quiz ${response.data.quiz_id} was created`,
+        payload: `Congrats: "${response.data.question}" is a great question!`,
       });
       dispatch({
         type: actionTypes.RESET_FORM,
